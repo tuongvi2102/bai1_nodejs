@@ -1,0 +1,11 @@
+1.npm init -y : chạy ct
+2.npm start: 
+3. npm install --save-dev nodemon
+(nếu lỗi thì... 
+    Get-ExecutionPolicy
+    Set-ExecutionPolicy Unrestrict
+)
+4. chạy chương trình 1 lần duy nhất nodemon server
+5. thoát khỏi chương trình: ctrl+c (y)
+6. cài đặt thư viện express: npm install express ejs
+7. cài đặt mongoosenpm install mongoose -save

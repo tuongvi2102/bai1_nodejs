@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Link CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Link JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+</head>
+<body> 
+    <%-include('../path/header.ejs')%>
+
+    <div class="container mt-5">
+        <h4>List Customer</h4>
+        <a type="button" class="btn btn-secondary my-2" href="/customer/add">Add new customer</a>
+        <table class="table table-success table-striped">
+            <tr>
+                <th>Name</th>
+                <th>Old</th>
+                <th>Edit modal</th>
+                <th>Edit</th>
+                <th>Delete</th>
+            </tr>
+            <% 
+                for(let i=0; i<customers.length; i++){%>
+                    <tr>
+                        <td id="name<%= customers[i]._id %>"><%= customers[i].name%></td>
+                        <td id="old<%= customers[i]._id %>"><%= customers[i].old%></td>
+                        <td><a href="/customer/edit/<%= customers[i]._id %>" class="btn btn-light editModal" id="<%= customers[i]._id%>" data-bs-toggle="modal" data-bs-target="#exampleModal">Edit modal</a></td>
+                        <td><a href="/customer/edit/<%= customers[i]._id %>" class="btn btn-light">Edit</a></td>
+                        <td>
+                            <form action="/customer/delete/<%= customers[i]._id %>?_method=DELETE" method="POST">
+                                <button type="submit" href="/customer/delete/<%= customers[i]._id %>" class="btn btn-danger">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                <%}
+            %>
+        </table>
+    </div>
+    
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form action="" method="POST" id="modal_edit_form">
+                <div class="modal-body">
+                        <div class="form-floating mb-3 ">
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Nguyễn Văn A" value="">
+                            <label for="floatingInput">Name</label>
+                        </div>
+                        <div class="form-floating">
+                            <input type="text" class="form-control" id="old" name="old" placeholder="22" value="">
+                            <label for="floatingPassword">Old</label>
+                        </div>
+                </div>
+                <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary" >Save changes</button>
+                </div>
+            </form>
+
+        </div>
+        </div>
+    </div>
+    <script>
+        const editModal=document.getElementsByClassName('editModal')
+        for(let i=0; i<editModal.length; i++)
+        {
+            editModal[i].addEventListener('click', show)
+        }
+        function show()
+        {
+            const id=this.id
+            document.getElementById('name').value=document.getElementById('name'+id).innerHTML
+            document.getElementById('old').value=document.getElementById('old'+id).innerHTML
+            const form_action='/customer/edit/'+id;
+            document.getElementById('modal_edit_form').action=form_action
+        }
+    </script>
+</body>
+</html>
